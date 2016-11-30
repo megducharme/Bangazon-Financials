@@ -5,7 +5,7 @@ namespace Bangazon
 {
 	public class BangazonConnection
 	{
-		private string _connectionString = "REPORTING_DB_PATH=/Users/meganducharme/workspace/bangazon/Bangazon-Financials/BangazonFinancial.db";
+		private string _connectionString = $"Filename={System.Environment.GetEnvironmentVariable("REPORTING_DB_PATH")}";
 
 		public void insert(string query)
 		{

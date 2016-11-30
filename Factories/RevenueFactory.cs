@@ -1,48 +1,224 @@
+using System;
 using System.Collections.Generic;
+using System.Text;
+using Bangazon;
+using BangazonFinancials.Entities;
 using Microsoft.Data.Sqlite;
 
-namespace Bangazon
+namespace BangazonFinancials.Factory
 {
 	public class RevenueFactory
     {
-		public List<Revenue> getAll()
+		public StringBuilder BangazonHeader()
+		{
+			string border = "===========================";
+			StringBuilder header = new StringBuilder ();
+			header.AppendLine ("\n");
+			header.AppendLine (border);
+			header.AppendLine ("BANGAZON FINANCIAL REPORTS");
+			header.AppendLine (border);
+
+			return header;
+
+		}
+		public StringBuilder ReportHeader(string headerTitle)
+		{
+			StringBuilder reportHeader = new StringBuilder ();
+            reportHeader.AppendLine (headerTitle);
+            reportHeader.AppendLine ("\n");
+            reportHeader.AppendLine (string.Format("{0,-30}" + "{1:c0}", "Product", "Amount"));
+            reportHeader.AppendLine ("-------------------------------------");
+
+			return reportHeader;
+		}
+		public List<KeyValuePair<string, int>> getWeeklyRevenue()
 		{
 			BangazonConnection conn = new BangazonConnection ();
-			List<Revenue> list = new List<Revenue> ();
+			List<KeyValuePair<string, int>> list = new List<KeyValuePair<string, int>>();
 
-			// Execute the query to retrieve all customers
-			conn.execute (@"select 
-				Id,
-				ProductName,  
-				ProductCost, 
-				ProductRevenue, 
-				ProductSupplierState, 
-				CustomerFirstName, 
-				CustomerLastName, 
-				CustomerAddress,
-                CustomerZipCode,
-                PurchaseDate 
-				from customer", 
+
+			conn.execute (@"SELECT
+			ProductName,
+			ProductCost
+			FROM Revenue 
+			WHERE PurchaseDate > DateTime ('now', '-7 days') 
+			ORDER BY ProductName", 
 				(SqliteDataReader reader) => {
+
 					while (reader.Read ())
 					{
-						list.Add(new Revenue {
-							id = reader.GetInt32(0),
-							ProductName = reader [1].ToString(),
-							ProductCost = reader [2].ToString(),
-							ProductRevenue = reader [3].ToString(),
-							ProductSupplierState = reader [4].ToString(),
-							CustomerFirstName = reader [5].ToString(),
-							CustomerLastName = reader [6].ToString(),
-                            CustomerAddress = reader [7].ToString(),
-                            CustomerZipCode = reader [8].ToString(),
-							PurchaseDate = reader [9].ToString(),
-						});
-					}
-				}
-			);
+							var ProductName = reader[0];
+							var StringProductName = ProductName.ToString();
+							var ProductCost = reader[1];
+							var StringProductCost = ProductCost.ToString();
+							var IntProductCost = int.Parse(StringProductCost);
 
+							var FinalReport = new KeyValuePair<string, int>(StringProductName, IntProductCost);
+
+						list.Add(FinalReport);	
+					};
+			});
 			return list;
 		}
+
+		// public List<KeyValuePair<string, int>> getMonthlyRevenue()
+		// {
+		// 	BangazonConnection conn = new BangazonConnection ();
+		// 	List<KeyValuePair<string, int>> list = new List<KeyValuePair<string, int>>();
+
+
+		// 	conn.execute (@"SELECT
+		// 	ProductName,
+		// 	ProductCost
+		// 	FROM Revenue 
+		// 	WHERE PurchaseDate > DateTime ('now', '-30 days') 
+		// 	ORDER BY ProductName", 
+		// 		(SqliteDataReader reader) => {
+					
+		// 			while (reader.Read ())
+		// 			{
+		// 					var ProductName = reader[0];
+		// 					var StringProductName = ProductName.ToString();
+		// 					var ProductCost = reader[1];
+		// 					var StringProductCost = ProductCost.ToString();
+		// 					var IntProductCost = int.Parse(StringProductCost);
+
+		// 					var FinalReport = new KeyValuePair<string, int>(StringProductName, IntProductCost);
+
+		// 				list.Add(FinalReport);	
+		// 			};
+		// 	});
+
+		// 	return list;
+
+		// }
+
+		// public List<KeyValuePair<string, int>> getQuarterlyRevenue()
+		// {
+		// 	BangazonConnection conn = new BangazonConnection ();
+		// 	List<KeyValuePair<string, int>> list = new List<KeyValuePair<string, int>>();
+
+
+		// 	conn.execute (@"SELECT
+		// 	ProductName,
+		// 	ProductCost
+		// 	FROM Revenue 
+		// 	WHERE PurchaseDate > DateTime ('now', '-90 days') 
+		// 	ORDER BY ProductName", 
+		// 		(SqliteDataReader reader) => {
+					
+		// 			while (reader.Read ())
+		// 			{
+		// 					var ProductName = reader[0];
+		// 					var StringProductName = ProductName.ToString();
+		// 					var ProductCost = reader[1];
+		// 					var StringProductCost = ProductCost.ToString();
+		// 					var IntProductCost = int.Parse(StringProductCost);
+
+		// 					var FinalReport = new KeyValuePair<string, int>(StringProductName, IntProductCost);
+
+		// 				list.Add(FinalReport);	
+		// 			};
+		// 	});
+
+		// 	return list;
+
+		// }
+
+		// public List<KeyValuePair<string, int>> getMonthlyRevenue()
+		// {
+		// 	BangazonConnection conn = new BangazonConnection ();
+		// 	List<KeyValuePair<string, int>> list = new List<KeyValuePair<string, int>>();
+
+
+		// 	conn.execute (@"SELECT
+		// 	ProductName,
+		// 	ProductCost
+		// 	FROM Revenue 
+		// 	WHERE PurchaseDate > DateTime ('now', '-30 days') 
+		// 	ORDER BY ProductName", 
+		// 		(SqliteDataReader reader) => {
+					
+		// 			while (reader.Read ())
+		// 			{
+		// 					var ProductName = reader[0];
+		// 					var StringProductName = ProductName.ToString();
+		// 					var ProductCost = reader[1];
+		// 					var StringProductCost = ProductCost.ToString();
+		// 					var IntProductCost = int.Parse(StringProductCost);
+
+		// 					var FinalReport = new KeyValuePair<string, int>(StringProductName, IntProductCost);
+
+		// 				list.Add(FinalReport);	
+		// 			};
+		// 	});
+
+		// 	return list;
+
+		// }
+
+		// public List<KeyValuePair<string, int>> getMonthlyRevenue()
+		// {
+		// 	BangazonConnection conn = new BangazonConnection ();
+		// 	List<KeyValuePair<string, int>> list = new List<KeyValuePair<string, int>>();
+
+
+		// 	conn.execute (@"SELECT
+		// 	ProductName,
+		// 	ProductCost
+		// 	FROM Revenue 
+		// 	WHERE PurchaseDate > DateTime ('now', '-30 days') 
+		// 	ORDER BY ProductName", 
+		// 		(SqliteDataReader reader) => {
+					
+		// 			while (reader.Read ())
+		// 			{
+		// 					var ProductName = reader[0];
+		// 					var StringProductName = ProductName.ToString();
+		// 					var ProductCost = reader[1];
+		// 					var StringProductCost = ProductCost.ToString();
+		// 					var IntProductCost = int.Parse(StringProductCost);
+
+		// 					var FinalReport = new KeyValuePair<string, int>(StringProductName, IntProductCost);
+
+		// 				list.Add(FinalReport);	
+		// 			};
+		// 	});
+
+		// 	return list;
+
+		// }
+
+		// public List<KeyValuePair<string, int>> getMonthlyRevenue()
+		// {
+		// 	BangazonConnection conn = new BangazonConnection ();
+		// 	List<KeyValuePair<string, int>> list = new List<KeyValuePair<string, int>>();
+
+
+		// 	conn.execute (@"SELECT
+		// 	ProductName,
+		// 	ProductCost
+		// 	FROM Revenue 
+		// 	WHERE PurchaseDate > DateTime ('now', '-30 days') 
+		// 	ORDER BY ProductName", 
+		// 		(SqliteDataReader reader) => {
+					
+		// 			while (reader.Read ())
+		// 			{
+		// 					var ProductName = reader[0];
+		// 					var StringProductName = ProductName.ToString();
+		// 					var ProductCost = reader[1];
+		// 					var StringProductCost = ProductCost.ToString();
+		// 					var IntProductCost = int.Parse(StringProductCost);
+
+		// 					var FinalReport = new KeyValuePair<string, int>(StringProductName, IntProductCost);
+
+		// 				list.Add(FinalReport);	
+		// 			};
+		// 	});
+
+		// 	return list;
+
+		// }
 	}
 }

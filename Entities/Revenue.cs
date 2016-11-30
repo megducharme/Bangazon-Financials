@@ -1,6 +1,6 @@
 using System;
 
-namespace Bangazon
+namespace BangazonFinancials.Entities
 {
 	public class Revenue
 	{
@@ -8,13 +8,6 @@ namespace Bangazon
 		public string ProductName { get; set; }
 		public string ProductCost { get; set; }
 		public string ProductRevenue { get; set; }
-		public string ProductSupplierState { get; set; }
-		public string CustomerFirstName { get; set; }
-		public string CustomerLastName { get; set; }
-		public string CustomerAddress { get; set; }
-        public string CustomerZipCode { get; set; }
         public string PurchaseDate { get; set; }
-
-        public Revenue () { }
     }
 }

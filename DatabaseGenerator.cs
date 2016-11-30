@@ -41,8 +41,7 @@ namespace BangazonProductRevenueReports
                 '{customersLastName[rnd2]}', 
                 '{customerAddressNumbers[rnd4]} {customerAddressStreet[rnd5]}', 
                 {customerZipcode[rnd6]}, 
-                '{start.AddDays(rnd.Next(range))}'
-            );";
+                '{start.AddDays(rnd.Next(range)).ToString("yyyy-MM-dd HH\\:mm\\:ss.fff")}');";
 
             return command;
         }
