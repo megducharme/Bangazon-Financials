@@ -4,6 +4,7 @@ using System.Text;
 using Bangazon;
 using BangazonFinancials.Entities;
 using Microsoft.Data.Sqlite;
+using System.Data.SqlClient;
 
 namespace BangazonFinancials.Factory
 {
@@ -21,6 +22,7 @@ namespace BangazonFinancials.Factory
 			return header;
 
 		}
+
 		public StringBuilder ReportHeader(string headerTitle)
 		{
 			StringBuilder reportHeader = new StringBuilder ();
@@ -30,7 +32,9 @@ namespace BangazonFinancials.Factory
             reportHeader.AppendLine ("-------------------------------------");
 
 			return reportHeader;
+
 		}
+
 		public List<KeyValuePair<string, int>> getWeeklyRevenue()
 		{
 			BangazonConnection conn = new BangazonConnection ();
@@ -58,167 +62,44 @@ namespace BangazonFinancials.Factory
 						list.Add(FinalReport);	
 					};
 			});
+
 			return list;
+
 		}
 
-		// public List<KeyValuePair<string, int>> getMonthlyRevenue()
-		// {
-		// 	BangazonConnection conn = new BangazonConnection ();
-		// 	List<KeyValuePair<string, int>> list = new List<KeyValuePair<string, int>>();
+		public List<KeyValuePair<string, int>> getReport(int amountOfDaysIncludedInReport)
+		{
+			var specificDays = (-amountOfDaysIncludedInReport);
 
+			string sqlQuery = $@"SELECT 
+			ProductName, 
+			ProductCost 
+			FROM Revenue 
+			WHERE PurchaseDate > DateTime ('now', '{specificDays} days') 
+			ORDER by ProductCost";
+			Console.WriteLine(sqlQuery);
 
-		// 	conn.execute (@"SELECT
-		// 	ProductName,
-		// 	ProductCost
-		// 	FROM Revenue 
-		// 	WHERE PurchaseDate > DateTime ('now', '-30 days') 
-		// 	ORDER BY ProductName", 
-		// 		(SqliteDataReader reader) => {
+			BangazonConnection conn = new BangazonConnection ();
+			List<KeyValuePair<string, int>> list = new List<KeyValuePair<string, int>>();
+
+			conn.execute (sqlQuery, 
+				(SqliteDataReader reader) => {
 					
-		// 			while (reader.Read ())
-		// 			{
-		// 					var ProductName = reader[0];
-		// 					var StringProductName = ProductName.ToString();
-		// 					var ProductCost = reader[1];
-		// 					var StringProductCost = ProductCost.ToString();
-		// 					var IntProductCost = int.Parse(StringProductCost);
+					while (reader.Read ())
+					{
+							var ProductName = reader[0];
+							var StringProductName = ProductName.ToString();
+							var ProductCost = reader[1];
+							var StringProductCost = ProductCost.ToString();
+							var IntProductCost = int.Parse(StringProductCost);
+							var FinalReport = new KeyValuePair<string, int>(StringProductName, IntProductCost);
 
-		// 					var FinalReport = new KeyValuePair<string, int>(StringProductName, IntProductCost);
+						list.Add(FinalReport);	
+					};
+			});
 
-		// 				list.Add(FinalReport);	
-		// 			};
-		// 	});
+			return list;
 
-		// 	return list;
-
-		// }
-
-		// public List<KeyValuePair<string, int>> getQuarterlyRevenue()
-		// {
-		// 	BangazonConnection conn = new BangazonConnection ();
-		// 	List<KeyValuePair<string, int>> list = new List<KeyValuePair<string, int>>();
-
-
-		// 	conn.execute (@"SELECT
-		// 	ProductName,
-		// 	ProductCost
-		// 	FROM Revenue 
-		// 	WHERE PurchaseDate > DateTime ('now', '-90 days') 
-		// 	ORDER BY ProductName", 
-		// 		(SqliteDataReader reader) => {
-					
-		// 			while (reader.Read ())
-		// 			{
-		// 					var ProductName = reader[0];
-		// 					var StringProductName = ProductName.ToString();
-		// 					var ProductCost = reader[1];
-		// 					var StringProductCost = ProductCost.ToString();
-		// 					var IntProductCost = int.Parse(StringProductCost);
-
-		// 					var FinalReport = new KeyValuePair<string, int>(StringProductName, IntProductCost);
-
-		// 				list.Add(FinalReport);	
-		// 			};
-		// 	});
-
-		// 	return list;
-
-		// }
-
-		// public List<KeyValuePair<string, int>> getMonthlyRevenue()
-		// {
-		// 	BangazonConnection conn = new BangazonConnection ();
-		// 	List<KeyValuePair<string, int>> list = new List<KeyValuePair<string, int>>();
-
-
-		// 	conn.execute (@"SELECT
-		// 	ProductName,
-		// 	ProductCost
-		// 	FROM Revenue 
-		// 	WHERE PurchaseDate > DateTime ('now', '-30 days') 
-		// 	ORDER BY ProductName", 
-		// 		(SqliteDataReader reader) => {
-					
-		// 			while (reader.Read ())
-		// 			{
-		// 					var ProductName = reader[0];
-		// 					var StringProductName = ProductName.ToString();
-		// 					var ProductCost = reader[1];
-		// 					var StringProductCost = ProductCost.ToString();
-		// 					var IntProductCost = int.Parse(StringProductCost);
-
-		// 					var FinalReport = new KeyValuePair<string, int>(StringProductName, IntProductCost);
-
-		// 				list.Add(FinalReport);	
-		// 			};
-		// 	});
-
-		// 	return list;
-
-		// }
-
-		// public List<KeyValuePair<string, int>> getMonthlyRevenue()
-		// {
-		// 	BangazonConnection conn = new BangazonConnection ();
-		// 	List<KeyValuePair<string, int>> list = new List<KeyValuePair<string, int>>();
-
-
-		// 	conn.execute (@"SELECT
-		// 	ProductName,
-		// 	ProductCost
-		// 	FROM Revenue 
-		// 	WHERE PurchaseDate > DateTime ('now', '-30 days') 
-		// 	ORDER BY ProductName", 
-		// 		(SqliteDataReader reader) => {
-					
-		// 			while (reader.Read ())
-		// 			{
-		// 					var ProductName = reader[0];
-		// 					var StringProductName = ProductName.ToString();
-		// 					var ProductCost = reader[1];
-		// 					var StringProductCost = ProductCost.ToString();
-		// 					var IntProductCost = int.Parse(StringProductCost);
-
-		// 					var FinalReport = new KeyValuePair<string, int>(StringProductName, IntProductCost);
-
-		// 				list.Add(FinalReport);	
-		// 			};
-		// 	});
-
-		// 	return list;
-
-		// }
-
-		// public List<KeyValuePair<string, int>> getMonthlyRevenue()
-		// {
-		// 	BangazonConnection conn = new BangazonConnection ();
-		// 	List<KeyValuePair<string, int>> list = new List<KeyValuePair<string, int>>();
-
-
-		// 	conn.execute (@"SELECT
-		// 	ProductName,
-		// 	ProductCost
-		// 	FROM Revenue 
-		// 	WHERE PurchaseDate > DateTime ('now', '-30 days') 
-		// 	ORDER BY ProductName", 
-		// 		(SqliteDataReader reader) => {
-					
-		// 			while (reader.Read ())
-		// 			{
-		// 					var ProductName = reader[0];
-		// 					var StringProductName = ProductName.ToString();
-		// 					var ProductCost = reader[1];
-		// 					var StringProductCost = ProductCost.ToString();
-		// 					var IntProductCost = int.Parse(StringProductCost);
-
-		// 					var FinalReport = new KeyValuePair<string, int>(StringProductName, IntProductCost);
-
-		// 				list.Add(FinalReport);	
-		// 			};
-		// 	});
-
-		// 	return list;
-
-		// }
+		}
 	}
 }

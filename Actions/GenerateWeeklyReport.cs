@@ -15,7 +15,7 @@ namespace BangazonFinancials.Actions
         {
             List<KeyValuePair<string, int>> weeklyreport = new List<KeyValuePair<string, int>>();
             RevenueFactory factory = new RevenueFactory();
-            weeklyreport = factory.getWeeklyRevenue();
+            weeklyreport = factory.getReport(7);
 
             var mainHeader = factory.BangazonHeader();
             Console.WriteLine(mainHeader);
