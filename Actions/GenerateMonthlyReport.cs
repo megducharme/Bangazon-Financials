@@ -7,7 +7,7 @@ namespace BangazonFinancials.Actions
 {
 	public class GenerateMonthlyReportAction
 	{
-        public static void ReadInput()
+        public static void GenerateReportReadInput()
         {
 
         }

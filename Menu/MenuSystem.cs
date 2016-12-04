@@ -9,8 +9,6 @@ namespace BangazonFinancials.Menu
 	{
 		private struct MenuItem {
 			public string prompt;
-			public delegate void MenuAction ();
-			public MenuAction Action;
 		};
 
 		// A collection for storing the menu items
@@ -29,32 +27,26 @@ namespace BangazonFinancials.Menu
 		{
 			_MenuItems.Add (1, new MenuItem (){
 				prompt = "Weekly Report",
-				Action = GenerateWeeklyReportAction.ReadInput
 			});
 
 			_MenuItems.Add (2, new MenuItem (){
-				prompt = "Monthy Report",
-				Action = GenerateMonthlyReportAction.ReadInput
+				prompt = "Monthly Report",
 			});
 
 			_MenuItems.Add (3, new MenuItem (){
 				prompt = "Quartly Report",
-				Action = GenerateQuartlyReportAction.ReadInput
 			});
 					
 			_MenuItems.Add (4, new MenuItem (){
 				prompt = "Customer Revenue Report",
-				Action = GenerateCustomerReportAction.ReadInput
 			});
 
 			_MenuItems.Add (5, new MenuItem (){
 				prompt = "Product Revenue Report",
-				Action = GenerateProductReportAction.ReadInput
 			});
 
 			_MenuItems.Add (6, new MenuItem (){
 				prompt = "Get me out of here!",
-				Action = MarkDone
 			});
 		}
 
@@ -77,7 +69,6 @@ namespace BangazonFinancials.Menu
 			mainMenu.AppendLine ("BANGAZON FINANCIAL REPORTS");
 			mainMenu.AppendLine (border);
 
-
 			// Display each menu item
 			foreach (KeyValuePair<int, MenuItem> item in _MenuItems) {
 				mainMenu.AppendLine (string.Format("{0}. {1}", item.Key, item.Value.prompt));
@@ -90,10 +81,19 @@ namespace BangazonFinancials.Menu
 			int choice;
 			Int32.TryParse (Console.ReadLine(), out choice);
 
-			// Based on their choice, execute the appropriate action
-			MenuItem menuItem;
-			_MenuItems.TryGetValue (choice, out menuItem);
-			menuItem.Action ();
+			if (choice == 1){
+
+				GenerateDateRangeReportAction.GenerateReport("WEEKLY REPORT", 7);
+
+			} else if (choice == 2){
+
+				GenerateDateRangeReportAction.GenerateReport("MONTHLY REPORT", 30);
+
+			} else if (choice == 3){
+
+				GenerateDateRangeReportAction.GenerateReport("QUARTLY REPORT", 120);
+
+			}
 		}
 	}
 }
