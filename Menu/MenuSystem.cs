@@ -25,27 +25,27 @@ namespace BangazonFinancials.Menu
 
 		public MenuSystem()
 		{
-			_MenuItems.Add (1, new MenuItem (){
+			_MenuItems.Add (1, new MenuItem(){
 				prompt = "Weekly Report",
 			});
 
-			_MenuItems.Add (2, new MenuItem (){
+			_MenuItems.Add (2, new MenuItem(){
 				prompt = "Monthly Report",
 			});
 
-			_MenuItems.Add (3, new MenuItem (){
+			_MenuItems.Add (3, new MenuItem(){
 				prompt = "Quartly Report",
 			});
 					
-			_MenuItems.Add (4, new MenuItem (){
+			_MenuItems.Add (4, new MenuItem(){
 				prompt = "Customer Revenue Report",
 			});
 
-			_MenuItems.Add (5, new MenuItem (){
+			_MenuItems.Add (5, new MenuItem(){
 				prompt = "Product Revenue Report",
 			});
 
-			_MenuItems.Add (6, new MenuItem (){
+			_MenuItems.Add (6, new MenuItem(){
 				prompt = "Get me out of here!",
 			});
 		}
@@ -54,7 +54,7 @@ namespace BangazonFinancials.Menu
 		{
 			while (!done) 
 			{
-				ShowMainMenu ();
+				ShowMainMenu();
 			}
 		}
 
@@ -83,15 +83,27 @@ namespace BangazonFinancials.Menu
 
 			if (choice == 1){
 
-				GenerateDateRangeReportAction.GenerateReport("WEEKLY REPORT", 7);
+				GenerateReportAction.ReportBasedOnDays("WEEKLY REPORT", 7);
 
 			} else if (choice == 2){
 
-				GenerateDateRangeReportAction.GenerateReport("MONTHLY REPORT", 30);
+				GenerateReportAction.ReportBasedOnDays("MONTHLY REPORT", 30);
 
 			} else if (choice == 3){
 
-				GenerateDateRangeReportAction.GenerateReport("QUARTLY REPORT", 120);
+				GenerateReportAction.ReportBasedOnDays("QUARTLY REPORT", 120);
+
+			} else if (choice == 4) {
+
+				GenerateReportAction.CustomerReport();
+
+			} else if (choice == 5) {
+
+				GenerateReportAction.ProductReport();
+
+			} else {
+
+				done = true;
 
 			}
 		}
